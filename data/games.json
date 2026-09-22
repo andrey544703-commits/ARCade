@@ -1,0 +1,24 @@
+[
+  {
+    "id": "game-1790092548339",
+    "title": "test 2",
+    "description": "ккк",
+    "genre": "Adventure",
+    "color": "#ff38ee",
+    "featured": false,
+    "isNew": true,
+    "developer": "archi",
+    "developerEmail": "ar4ik@zalupa.com",
+    "status": "approved",
+    "fileName": "ZZ.zip",
+    "fileUrl": "/downloads/1790092547942-ZZ.zip",
+    "coverUrl": "/covers/1790092548334-_________________.png",
+    "createdAt": "2026-09-22T15:55:48.339Z",
+    "likes": 0,
+    "dislikes": 0,
+    "downloads": 0,
+    "reviews": [],
+    "reactions": {},
+    "moderatedAt": "2026-09-22T15:56:10.300Z"
+  }
+]
