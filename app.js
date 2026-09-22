@@ -6,9 +6,8 @@ const state = {
   filter: 'all',
   authMode: 'login'
 };
-state.users = state.users.map((user) => ({ ...user, role: 'moderator' }));
-if (!state.users.some((user) => user.email === 'admin@arcade.local')) state.users.push({ email: 'admin@arcade.local', password: 'admin123', nickname: 'moderator', role: 'moderator' });
-if (state.currentUser) state.currentUser.role = 'moderator';
+state.users = state.users.map((user) => ({ ...user, role: user.role === 'developer' ? 'developer' : 'user' }));
+if (state.currentUser) state.currentUser.role = state.currentUser.role === 'developer' ? 'developer' : 'user';
 localStorage.setItem('arcade_users', JSON.stringify(state.users));
 localStorage.setItem('arcade_current_user', JSON.stringify(state.currentUser));
 
@@ -23,6 +22,16 @@ const escapeHtml = (value) => String(value).replace(/[&<>'"]/g, (char) => ({ '&'
 const initials = (name) => (name || '?').slice(0, 2).toUpperCase();
 const isRecentRelease = (game) => game.createdAt && Date.now() - new Date(game.createdAt).getTime() <= 30 * 24 * 60 * 60 * 1000;
 const currentHeaders = () => state.currentUser ? { 'x-user-email': state.currentUser.email } : {};
+function syncCurrentUserPermissions() {
+  if (!state.currentUser) return Promise.resolve();
+  return fetch('/api/session', { headers: currentHeaders() }).then((response) => response.json()).then((permissions) => {
+    state.currentUser.role = permissions.moderator ? 'moderator' : (state.currentUser.role === 'developer' ? 'developer' : 'user');
+    const storedUser = state.users.find((user) => user.email === state.currentUser.email);
+    if (storedUser) storedUser.role = state.currentUser.role;
+    persist();
+    updateProfile();
+  }).catch(() => {});
+}
 
 function renderGameCard(game) {
   const isSaved = state.saved.includes(game.id);
@@ -51,7 +60,7 @@ function renderLibrary() {
 function renderStudio() {
   const ownGames = state.games.filter((game) => state.currentUser && game.developer === state.currentUser.nickname);
   renderStudioCards(ownGames);
-  if (state.currentUser) fetch('/api/my-games', { headers: currentHeaders() }).then((response) => response.json()).then((games) => { state.games = [...state.games.filter((game) => game.developerEmail !== state.currentUser.email), ...games]; renderStudioCards(games); }).catch(() => {});
+  if (state.currentUser?.role === 'developer' || state.currentUser?.role === 'moderator') fetch('/api/my-games', { headers: currentHeaders() }).then((response) => response.json()).then((games) => { state.games = [...state.games.filter((game) => game.developerEmail !== state.currentUser.email), ...games]; renderStudioCards(games); }).catch(() => {});
 }
 function renderStudioCards(games) { $('#studioGames').innerHTML = games.length ? games.map((game) => `<div class="studio-game"><h4>${escapeHtml(game.title)}</h4><p>${escapeHtml(game.genre)} · ${escapeHtml(game.fileName)}</p><span class="release-status ${escapeHtml(game.status || 'approved')}">${game.status === 'pending' ? 'На проверке' : game.status === 'rejected' ? 'Отклонена' : 'Одобрена'}</span>${game.status === 'approved' ? `<a href="${escapeHtml(game.fileUrl)}" download>Скачать файл ↘</a>` : ''}</div>`).join('') : '<div class="studio-game"><h4>Пока нет релизов</h4><p>Первая публикация появится после отправки.</p></div>'; }
 function renderModeration(games) {
@@ -70,10 +79,10 @@ function updateProfile() {
   $('#profileName').textContent = user ? user.nickname : 'Войти';
   $('#avatar').textContent = user ? initials(user.nickname) : '?';
   $('#menuUserName').textContent = user ? user.nickname : 'Гость';
-  $('#menuUserEmail').textContent = user ? `${user.email} · moderator` : 'Войдите, чтобы сохранять игры';
+  $('#menuUserEmail').textContent = user ? `${user.email} · ${user.role}` : 'Войдите, чтобы сохранять игры';
   $('#logoutButton').classList.toggle('is-hidden', !user);
-  $('.developer-only').classList.toggle('is-hidden', !user);
-  $('.moderator-only').classList.toggle('is-hidden', !user);
+  $('.developer-only').classList.toggle('is-hidden', !user || !['developer', 'moderator'].includes(user.role));
+  $('.moderator-only').classList.toggle('is-hidden', !user || user.role !== 'moderator');
   renderStudio();
   if (user?.role === 'moderator') loadModeration();
 }
@@ -133,8 +142,8 @@ function navigate(route) {
   $$('.nav-link').forEach((link) => link.classList.toggle('is-active', link.dataset.route === route));
   ['discover', 'library', 'studio', 'moderation', 'gameDetail'].forEach((id) => $(`#${id}`).classList.toggle('is-hidden', id !== route));
   if (route === 'library') renderLibrary();
-  if (route === 'studio' && !state.currentUser) { openModal('authModal'); showAuthMessage('Войди, чтобы открыть студию.'); navigate('discover'); }
-  if (route === 'moderation' && !state.currentUser) { openModal('authModal'); showAuthMessage('Войди, чтобы открыть модерацию.'); navigate('discover'); }
+  if (route === 'studio' && (!state.currentUser || !['developer', 'moderator'].includes(state.currentUser.role))) { openModal('authModal'); showAuthMessage('Нужен аккаунт разработчика или модератора.'); navigate('discover'); }
+  if (route === 'moderation' && (!state.currentUser || state.currentUser.role !== 'moderator')) { openModal('authModal'); showAuthMessage('Раздел доступен только модераторам.'); navigate('discover'); }
   if (route === 'moderation') loadModeration();
   window.scrollTo({ top: document.querySelector('main').offsetTop - 20, behavior: 'smooth' });
 }
@@ -175,13 +184,13 @@ $('#authForm').addEventListener('submit', (event) => {
   if (state.authMode === 'register') {
     if (!nickname) { showAuthMessage('Придумай никнейм.'); return; }
     if (state.users.some((user) => user.email === email)) { showAuthMessage('Такой email уже зарегистрирован.'); return; }
-    state.users.push({ email, password, nickname, role: 'moderator' }); state.currentUser = { email, nickname, role: 'moderator' }; toast(`Аккаунт ${nickname} создан`);
+    state.users.push({ email, password, nickname, role }); state.currentUser = { email, nickname, role }; toast(`Аккаунт ${nickname} создан`);
   } else {
     const user = state.users.find((item) => item.email === email && item.password === password);
     if (!user) { showAuthMessage('Неверный email или пароль.'); return; }
     state.currentUser = { email: user.email, nickname: user.nickname, role: user.role }; toast(`С возвращением, ${user.nickname}`);
   }
-  persist(); updateProfile(); closeModal('authModal'); event.target.reset();
+  persist(); updateProfile(); closeModal('authModal'); event.target.reset(); syncCurrentUserPermissions();
 });
 
 $('#gameForm').addEventListener('submit', (event) => {
@@ -215,4 +224,5 @@ fetch('/api/games')
   .then((games) => { state.games = games; renderCatalog(); renderLibrary(); renderStudio(); if (initialRoute.startsWith('game/')) openGame(decodeURIComponent(initialRoute.slice(5))); })
   .catch(() => { $('#emptyState').classList.remove('is-hidden'); $('#emptyState h3').textContent = 'Сервер не запущен'; $('#emptyState p').textContent = 'Запусти npm install, затем npm start.'; });
 updateProfile();
+syncCurrentUserPermissions();
 if (!initialRoute.startsWith('game/')) navigate(initialRoute);

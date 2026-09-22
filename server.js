@@ -70,7 +70,12 @@ function writeGames(games) {
 
 function isModerator(request) {
   const email = request.get('x-user-email');
-  return Boolean(email);
+  if (!email) return false;
+  try {
+    return JSON.parse(fs.readFileSync(moderatorsFile, 'utf8')).some((moderator) => moderator.email.toLowerCase() === email.toLowerCase());
+  } catch (error) {
+    return false;
+  }
 }
 
 function requireModerator(request, response, next) {
@@ -80,6 +85,10 @@ function requireModerator(request, response, next) {
 
 app.use(express.static(__dirname));
 app.use(express.json());
+
+app.get('/api/session', requireLogin, (request, response) => {
+  response.json({ moderator: isModerator(request) });
+});
 
 app.get('/api/games', (request, response) => {
   response.json(readGames().filter((game) => (game.status || 'approved') === 'approved').map(normalizeGame));
