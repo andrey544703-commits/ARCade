@@ -2,3 +2,6 @@ node_modules/
 uploads/games/*
 uploads/covers/*
 data/games.json.bak
+data/users.json
+storage/
+.env

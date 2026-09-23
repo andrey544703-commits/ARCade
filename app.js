@@ -187,30 +187,26 @@ const translations = {
 
 const state = {
   games: [],
-  users: JSON.parse(localStorage.getItem('arcade_users') || '[]'),
-  currentUser: JSON.parse(localStorage.getItem('arcade_current_user') || 'null'),
+  currentUser: null,
   saved: JSON.parse(localStorage.getItem('arcade_saved') || '[]'),
   filter: 'all',
   authMode: 'login',
+  verifiedEmail: '',
   lang: localStorage.getItem('arcade_lang') || 'en'
 };
-state.users = state.users.map((user) => ({ ...user, role: user.role === 'developer' ? 'developer' : 'user' }));
-if (state.currentUser) state.currentUser.role = state.currentUser.role === 'developer' ? 'developer' : 'user';
-localStorage.setItem('arcade_users', JSON.stringify(state.users));
-localStorage.setItem('arcade_current_user', JSON.stringify(state.currentUser));
+localStorage.removeItem('arcade_users');
+localStorage.removeItem('arcade_current_user');
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 const t = (key) => translations[state.lang]?.[key] ?? translations.ru[key] ?? key;
 const persist = () => {
-  localStorage.setItem('arcade_users', JSON.stringify(state.users));
   localStorage.setItem('arcade_saved', JSON.stringify(state.saved));
-  localStorage.setItem('arcade_current_user', JSON.stringify(state.currentUser));
 };
 const escapeHtml = (value) => String(value).replace(/[&<>'"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#039;', '"': '&quot;' }[char]));
 const initials = (name) => (name || '?').slice(0, 2).toUpperCase();
 const isRecentRelease = (game) => game.createdAt && Date.now() - new Date(game.createdAt).getTime() <= 30 * 24 * 60 * 60 * 1000;
-const currentHeaders = () => state.currentUser ? { 'x-user-email': state.currentUser.email } : {};
+const currentHeaders = () => ({});
 const uniqueGames = (games) => {
   const seen = new Set();
   return (Array.isArray(games) ? games : []).filter((game) => {
@@ -220,14 +216,11 @@ const uniqueGames = (games) => {
   });
 };
 function syncCurrentUserPermissions() {
-  if (!state.currentUser) return Promise.resolve();
-  return fetch('/api/session', { headers: currentHeaders() }).then((response) => response.json()).then((permissions) => {
-    state.currentUser.role = permissions.moderator ? 'moderator' : (state.currentUser.role === 'developer' ? 'developer' : 'user');
-    const storedUser = state.users.find((user) => user.email === state.currentUser.email);
-    if (storedUser) storedUser.role = state.currentUser.role;
-    persist();
+  return fetch('/api/session').then((response) => response.json()).then((permissions) => {
+    state.currentUser = permissions.user;
+    if (state.currentUser) state.currentUser.role = permissions.moderator ? 'moderator' : state.currentUser.role;
     updateProfile();
-  }).catch(() => {});
+  }).catch(() => { state.currentUser = null; updateProfile(); });
 }
 
 function renderGameCard(game) {
@@ -421,7 +414,19 @@ function openModal(id) { $(`#${id}`).classList.remove('is-hidden'); document.bod
 function closeModal(id) { $(`#${id}`).classList.add('is-hidden'); document.body.style.overflow = ''; }
 function toast(message) { const element = $('#toast'); element.textContent = message; element.classList.add('is-visible'); setTimeout(() => element.classList.remove('is-visible'), 2600); }
 function showAuthMessage(message = '') { $('#authMessage').textContent = message; }
-function setAuthMode(mode) { state.authMode = mode; $$('#authModal [data-auth-mode]').forEach((button) => button.classList.toggle('is-active', button.dataset.authMode === mode)); $$('.register-field').forEach((field) => field.classList.toggle('is-hidden', mode !== 'register')); $('#authTitle').textContent = mode === 'login' ? t('authWelcome') : t('authCreate'); $('#authSubmit').innerHTML = mode === 'login' ? `${t('authSubmitLogin')} <span>↗</span>` : `${t('authSubmitRegister')} <span>↗</span>`; showAuthMessage(); }
+function setAuthMode(mode) { state.authMode = mode; state.verifiedEmail = ''; $$('#authModal [data-auth-mode]').forEach((button) => button.classList.toggle('is-active', button.dataset.authMode === mode)); $$('.register-field').forEach((field) => field.classList.toggle('is-hidden', mode !== 'register')); $('#authTitle').textContent = mode === 'login' ? t('authWelcome') : t('authCreate'); $('#authSubmit').innerHTML = mode === 'login' ? `${t('authSubmitLogin')} <span>↗</span>` : `${t('authSubmitRegister')} <span>↗</span>`; showAuthMessage(); }
+
+$('#sendCodeButton').addEventListener('click', () => {
+  const email = $('#authEmail').value.trim().toLowerCase();
+  if (!email) { showAuthMessage('Enter your email first.'); return; }
+  const button = $('#sendCodeButton');
+  button.disabled = true;
+  fetch('/api/auth/send-code', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) })
+    .then(async (response) => { const payload = await response.json(); if (!response.ok) throw new Error(payload.message); return payload; })
+    .then((payload) => showAuthMessage(payload.message))
+    .catch((error) => showAuthMessage(error.message))
+    .finally(() => { button.disabled = false; });
+});
 
 $('#langToggle').addEventListener('click', () => {
   state.lang = state.lang === 'ru' ? 'en' : 'ru';
@@ -441,7 +446,7 @@ $('#searchToggle').addEventListener('click', () => { $('#searchBox').classList.t
 $('#searchInput').addEventListener('input', (event) => { const query = event.target.value.toLowerCase(); $$('#gamesGrid .game-card').forEach((card) => card.classList.toggle('is-hidden', !card.textContent.toLowerCase().includes(query))); });
 $('#profileButton').addEventListener('click', () => $('#profileMenu').classList.toggle('is-open'));
 $('#openAuth').addEventListener('click', () => { $('#profileMenu').classList.remove('is-open'); openModal('authModal'); });
-$('#logoutButton').addEventListener('click', () => { state.currentUser = null; persist(); updateProfile(); $('#profileMenu').classList.remove('is-open'); toast(t('logoutMessage')); });
+$('#logoutButton').addEventListener('click', () => { fetch('/api/auth/logout', { method: 'POST' }).finally(() => { state.currentUser = null; updateProfile(); $('#profileMenu').classList.remove('is-open'); toast(t('logoutMessage')); }); });
 $$('[data-route]').forEach((link) => link.addEventListener('click', (event) => { event.preventDefault(); navigate(link.dataset.route); }));
 $$('[data-close]').forEach((button) => button.addEventListener('click', () => closeModal(button.dataset.close)));
 $$('[data-auth-mode]').forEach((button) => button.addEventListener('click', () => setAuthMode(button.dataset.authMode)));
@@ -467,14 +472,26 @@ $('#authForm').addEventListener('submit', (event) => {
   const email = $('#authEmail').value.trim().toLowerCase(); const password = $('#authPassword').value; const nickname = $('#authNickname').value.trim(); const role = $('#authRole').value;
   if (state.authMode === 'register') {
     if (!nickname) { showAuthMessage(t('authPromptNickname')); return; }
-    if (state.users.some((user) => user.email === email)) { showAuthMessage(t('authPromptExists')); return; }
-    state.users.push({ email, password, nickname, role }); state.currentUser = { email, nickname, role }; toast(`${t('accountCreated')}: ${nickname}`);
+    const code = $('#authCode').value.trim();
+    if (!code) { showAuthMessage('Enter the verification code from your email.'); return; }
+    const submitButton = $('#authSubmit');
+    submitButton.disabled = true;
+    fetch('/api/auth/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password, nickname, role, code }) })
+      .then(async (response) => { const payload = await response.json(); if (!response.ok) throw new Error(payload.message); return payload; })
+      .then((payload) => { state.currentUser = payload.user; toast(`${t('accountCreated')}: ${nickname}`); persist(); updateProfile(); closeModal('authModal'); event.target.reset(); })
+      .catch((error) => showAuthMessage(error.message))
+      .finally(() => { submitButton.disabled = false; });
+    return;
   } else {
-    const user = state.users.find((item) => item.email === email && item.password === password);
-    if (!user) { showAuthMessage(t('authPromptInvalid')); return; }
-    state.currentUser = { email: user.email, nickname: user.nickname, role: user.role }; toast(`${t('welcomeBack')} ${user.nickname}`);
+    const submitButton = $('#authSubmit');
+    submitButton.disabled = true;
+    fetch('/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) })
+      .then(async (response) => { const payload = await response.json(); if (!response.ok) throw new Error(payload.message); return payload; })
+      .then((payload) => { state.currentUser = payload.user; toast(`${t('welcomeBack')} ${payload.user.nickname}`); persist(); updateProfile(); closeModal('authModal'); event.target.reset(); })
+      .catch((error) => showAuthMessage(error.message))
+      .finally(() => { submitButton.disabled = false; });
+    return;
   }
-  persist(); updateProfile(); closeModal('authModal'); event.target.reset(); syncCurrentUserPermissions();
 });
 
 $('#gameForm').addEventListener('submit', (event) => {
@@ -485,8 +502,6 @@ $('#gameForm').addEventListener('submit', (event) => {
   formData.append('description', $('#gameDescription').value.trim());
   formData.append('genre', $('#gameGenre').value);
   formData.append('color', $('#gameColor').value);
-  formData.append('developer', state.currentUser.nickname);
-  formData.append('developerEmail', state.currentUser.email);
   formData.append('gameFile', $('#gameFile').files[0]);
   formData.append('coverImage', $('#coverImage').files[0]);
   const submitButton = $('#gameForm button[type="submit"]');
