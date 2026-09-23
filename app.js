@@ -211,6 +211,14 @@ const escapeHtml = (value) => String(value).replace(/[&<>'"]/g, (char) => ({ '&'
 const initials = (name) => (name || '?').slice(0, 2).toUpperCase();
 const isRecentRelease = (game) => game.createdAt && Date.now() - new Date(game.createdAt).getTime() <= 30 * 24 * 60 * 60 * 1000;
 const currentHeaders = () => state.currentUser ? { 'x-user-email': state.currentUser.email } : {};
+const uniqueGames = (games) => {
+  const seen = new Set();
+  return (Array.isArray(games) ? games : []).filter((game) => {
+    if (!game || !game.id || seen.has(game.id)) return false;
+    seen.add(game.id);
+    return true;
+  });
+};
 function syncCurrentUserPermissions() {
   if (!state.currentUser) return Promise.resolve();
   return fetch('/api/session', { headers: currentHeaders() }).then((response) => response.json()).then((permissions) => {
@@ -235,19 +243,19 @@ function bindGameActions(container) {
 }
 
 function renderCatalog() {
-  const games = state.games.filter((game) => (game.status || 'approved') === 'approved' && (state.filter === 'all' || (state.filter === 'featured' && game.featured) || (state.filter === 'new' && isRecentRelease(game))));
+  const games = uniqueGames(state.games).filter((game) => (game.status || 'approved') === 'approved' && (state.filter === 'all' || (state.filter === 'featured' && game.featured) || (state.filter === 'new' && isRecentRelease(game))));
   $('#gamesGrid').innerHTML = games.map(renderGameCard).join('');
   $('#emptyState').classList.toggle('is-hidden', games.length > 0);
   bindGameActions('#gamesGrid');
 }
 function renderLibrary() {
-  const games = state.games.filter((game) => state.saved.includes(game.id));
+  const games = uniqueGames(state.games).filter((game) => state.saved.includes(game.id));
   $('#libraryGrid').innerHTML = games.map(renderGameCard).join('');
   $('#libraryEmpty').classList.toggle('is-hidden', games.length > 0);
   bindGameActions('#libraryGrid');
 }
 function renderStudio() {
-  const ownGames = state.games.filter((game) => state.currentUser && game.developer === state.currentUser.nickname);
+  const ownGames = uniqueGames(state.games).filter((game) => state.currentUser && game.developer === state.currentUser.nickname);
   renderStudioCards(ownGames);
   if (state.currentUser?.role === 'developer' || state.currentUser?.role === 'moderator') fetch('/api/my-games', { headers: currentHeaders() }).then((response) => response.json()).then((games) => { state.games = [...state.games.filter((game) => game.developerEmail !== state.currentUser.email), ...games]; renderStudioCards(games); }).catch(() => {});
 }
@@ -260,6 +268,34 @@ function renderModeration(games) {
   $$('[data-delete-game]').forEach((button) => button.addEventListener('click', () => deleteModeratedGame(button.dataset.deleteGame)));
 }
 function loadModeration() { fetch('/api/moderation/games', { headers: currentHeaders() }).then((response) => response.json()).then((games) => { if (Array.isArray(games)) renderModeration(games); }).catch(() => toast('Failed to load the moderation queue.')); }
+function renderModerators(moderators) {
+  const list = $('#moderatorsList');
+  if (!list) return;
+  list.innerHTML = moderators.length ? moderators.map((moderator) => `<li><span>${escapeHtml(moderator.nickname || moderator.email)}</span><small>${escapeHtml(moderator.email)}</small></li>`).join('') : '<li><span>No moderators yet</span></li>';
+}
+function loadModerators() {
+  if (!state.currentUser || state.currentUser.role !== 'moderator') return;
+  fetch('/api/moderation/moderators', { headers: currentHeaders() })
+    .then((response) => response.json())
+    .then((moderators) => { if (Array.isArray(moderators)) renderModerators(moderators); })
+    .catch(() => toast('Failed to load moderators.'));
+}
+function addModerator(event) {
+  event.preventDefault();
+  const email = $('#moderatorEmail').value.trim();
+  const nickname = $('#moderatorNickname').value.trim();
+  fetch('/api/moderation/moderators', {
+    method: 'POST',
+    headers: { ...currentHeaders(), 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, nickname })
+  }).then(async (response) => {
+    const payload = await response.json();
+    if (!response.ok) throw new Error(payload.message || 'Unable to add moderator.');
+    $('#moderatorForm').reset();
+    loadModerators();
+    toast(`Moderator added: ${nickname}`);
+  }).catch((error) => toast(error.message));
+}
 function moderateGame(id, status) { fetch(`/api/moderation/games/${encodeURIComponent(id)}/status`, { method: 'PATCH', headers: { ...currentHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) }).then(async (response) => { if (!response.ok) throw new Error((await response.json()).message); loadModeration(); toast(status === 'approved' ? 'Game approved' : 'Game rejected'); }).catch((error) => toast(error.message)); }
 function editModeratedGame(id) { const game = state.games.find((item) => item.id === id); if (!game) return; const title = prompt('Game title', game.title); const description = prompt('Description', game.description); const genre = prompt('Genre', game.genre); const color = prompt('Cover color in #RRGGBB format', game.color); if ([title, description, genre, color].some((value) => value === null)) return; fetch(`/api/moderation/games/${encodeURIComponent(id)}`, { method: 'PUT', headers: { ...currentHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ title, description, genre, color }) }).then(() => { loadModeration(); toast('Game updated'); }); }
 function deleteModeratedGame(id) { if (!confirm('Delete the game and its files?')) return; fetch(`/api/moderation/games/${encodeURIComponent(id)}`, { method: 'DELETE', headers: currentHeaders() }).then(() => { state.games = state.games.filter((game) => game.id !== id); renderCatalog(); loadModeration(); toast('Game deleted'); }); }
@@ -300,6 +336,7 @@ function applyLanguage() {
   });
   if (state.currentUser?.role === 'moderator') {
     $('#moderationList').innerHTML = $('#moderationList').innerHTML;
+    loadModerators();
   }
 }
 function updateProfile() {
@@ -313,6 +350,7 @@ function updateProfile() {
   $('.moderator-only').classList.toggle('is-hidden', !user || user.role !== 'moderator');
   renderStudio();
   if (user?.role === 'moderator') loadModeration();
+  if (user?.role === 'moderator') loadModerators();
   applyLanguage();
 }
 function toggleSaved(id) {
@@ -376,7 +414,7 @@ function navigate(route) {
   if (route === 'library') renderLibrary();
   if (route === 'studio' && (!state.currentUser || !['developer', 'moderator'].includes(state.currentUser.role))) { openModal('authModal'); showAuthMessage('A developer or moderator account is required.'); navigate('discover'); }
   if (route === 'moderation' && (!state.currentUser || state.currentUser.role !== 'moderator')) { openModal('authModal'); showAuthMessage('This section is for moderators only.'); navigate('discover'); }
-  if (route === 'moderation') loadModeration();
+  if (route === 'moderation') { loadModeration(); loadModerators(); }
   window.scrollTo({ top: document.querySelector('main').offsetTop - 20, behavior: 'smooth' });
 }
 function openModal(id) { $(`#${id}`).classList.remove('is-hidden'); document.body.style.overflow = 'hidden'; }
@@ -461,13 +499,16 @@ $('#gameForm').addEventListener('submit', (event) => {
     .finally(() => { submitButton.disabled = false; submitButton.firstChild.textContent = `${t('publishGame')} `; });
 });
 
+  const moderatorForm = $('#moderatorForm');
+  if (moderatorForm) moderatorForm.addEventListener('submit', addModerator);
+
 document.addEventListener('click', (event) => { if (!event.target.closest('.profile-menu') && !event.target.closest('#profileButton')) $('#profileMenu').classList.remove('is-open'); });
 window.addEventListener('hashchange', () => { const route = location.hash.replace('#', '') || 'discover'; if (route.startsWith('game/')) { if (state.games.length) openGame(decodeURIComponent(route.slice(5))); } else navigate(route); });
 window.addEventListener('popstate', () => navigate('discover'));
 const initialRoute = location.hash.replace('#', '') || 'discover';
 fetch('/api/games')
   .then((response) => response.json())
-  .then((games) => { state.games = games; renderCatalog(); renderLibrary(); renderStudio(); if (initialRoute.startsWith('game/')) openGame(decodeURIComponent(initialRoute.slice(5))); })
+  .then((games) => { state.games = uniqueGames(games); renderCatalog(); renderLibrary(); renderStudio(); if (initialRoute.startsWith('game/')) openGame(decodeURIComponent(initialRoute.slice(5))); })
   .catch(() => { $('#emptyState').classList.remove('is-hidden'); $('#emptyState h3').textContent = 'Server is not running'; $('#emptyState p').textContent = 'Run npm install and then npm start.'; });
 applyLanguage();
 updateProfile();

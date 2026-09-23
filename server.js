@@ -49,7 +49,7 @@ const uploadRelease = multer({
 
 function readGames() {
   try {
-    return JSON.parse(fs.readFileSync(gamesFile, 'utf8'));
+    return dedupeGames(JSON.parse(fs.readFileSync(gamesFile, 'utf8')));
   } catch (error) {
     console.error('games.json is corrupted, trying backup:', error.message);
     try {
@@ -62,10 +62,21 @@ function readGames() {
 }
 
 function writeGames(games) {
+  const unique = dedupeGames(games);
   const temporaryFile = `${gamesFile}.tmp`;
   if (fs.existsSync(gamesFile)) fs.copyFileSync(gamesFile, gamesBackupFile);
-  fs.writeFileSync(temporaryFile, JSON.stringify(games, null, 2));
+  fs.writeFileSync(temporaryFile, JSON.stringify(unique, null, 2));
   fs.renameSync(temporaryFile, gamesFile);
+}
+
+function dedupeGames(games) {
+  const seen = new Set();
+  return (Array.isArray(games) ? games : []).filter((game) => {
+    if (!game || !game.id) return false;
+    if (seen.has(game.id)) return false;
+    seen.add(game.id);
+    return true;
+  });
 }
 
 function isModerator(request) {
@@ -101,6 +112,35 @@ app.get('/api/my-games', requireLogin, (request, response) => {
 
 app.get('/api/moderation/games', requireModerator, (request, response) => {
   response.json(readGames().map(normalizeGame));
+});
+
+app.get('/api/moderation/moderators', requireModerator, (request, response) => {
+  const moderators = JSON.parse(fs.readFileSync(moderatorsFile, 'utf8'));
+  response.json(moderators);
+});
+
+app.post('/api/moderation/moderators', requireModerator, (request, response) => {
+  const { email, nickname } = request.body || {};
+  const trimmedEmail = String(email || '').trim().toLowerCase();
+  const trimmedNickname = String(nickname || '').trim();
+
+  if (!trimmedEmail || !trimmedNickname) {
+    return response.status(400).json({ message: 'Email and nickname are required.' });
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+    return response.status(400).json({ message: 'Enter a valid email address.' });
+  }
+
+  const moderators = JSON.parse(fs.readFileSync(moderatorsFile, 'utf8'));
+  if (moderators.some((moderator) => moderator.email.toLowerCase() === trimmedEmail)) {
+    return response.status(409).json({ message: 'This moderator already exists.' });
+  }
+
+  const moderator = { email: trimmedEmail, nickname: trimmedNickname };
+  moderators.push(moderator);
+  fs.writeFileSync(moderatorsFile, JSON.stringify(moderators, null, 2));
+  response.status(201).json(moderator);
 });
 
 function normalizeGame(game) {

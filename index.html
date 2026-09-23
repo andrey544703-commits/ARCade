@@ -72,6 +72,17 @@
 
       <section class="moderation-section is-hidden" id="moderation">
         <div class="section-heading"><div><p class="eyebrow">04 / moderation</p><h2>Release review</h2></div><p class="section-note">Moderators only</p></div>
+        <div class="moderation-panel">
+          <div class="moderation-quick-actions">
+            <h3>Moderator team</h3>
+            <form id="moderatorForm" class="moderator-form">
+              <input id="moderatorEmail" type="email" placeholder="moderator@email.com" required />
+              <input id="moderatorNickname" type="text" placeholder="Moderator nickname" required />
+              <button class="primary-button compact" type="submit">+ Add moderator</button>
+            </form>
+          </div>
+          <ul class="moderators-list" id="moderatorsList"></ul>
+        </div>
         <div class="moderation-list" id="moderationList"></div>
       </section>
 
