@@ -51,11 +51,11 @@ function readGames() {
   try {
     return JSON.parse(fs.readFileSync(gamesFile, 'utf8'));
   } catch (error) {
-    console.error('games.json поврежден, пробую backup:', error.message);
+    console.error('games.json is corrupted, trying backup:', error.message);
     try {
       return JSON.parse(fs.readFileSync(gamesBackupFile, 'utf8'));
     } catch (backupError) {
-      console.error('backup каталога недоступен:', backupError.message);
+      console.error('backup directory is unavailable:', backupError.message);
       return [];
     }
   }
@@ -79,7 +79,7 @@ function isModerator(request) {
 }
 
 function requireModerator(request, response, next) {
-  if (!isModerator(request)) return response.status(403).json({ message: 'Нужны права модератора.' });
+  if (!isModerator(request)) return response.status(403).json({ message: 'Moderator rights are required.' });
   next();
 }
 
@@ -118,7 +118,7 @@ function normalizeGame(game) {
 app.get('/api/games/:id', (request, response) => {
   const email = request.get('x-user-email');
   const game = readGames().filter((item) => (item.status || 'approved') === 'approved').map((item) => publicGame(item, email)).find((item) => item.id === request.params.id);
-  if (!game) return response.status(404).json({ message: 'Игра не найдена.' });
+  if (!game) return response.status(404).json({ message: 'Game not found.' });
   response.json(game);
 });
 
@@ -138,18 +138,18 @@ function publicGame(game, email) {
 app.post('/api/games', requireLogin, uploadRelease.fields([{ name: 'gameFile', maxCount: 1 }, { name: 'coverImage', maxCount: 1 }]), (request, response) => {
   const gameFile = request.files?.gameFile?.[0];
   const coverImage = request.files?.coverImage?.[0];
-  if (!gameFile) return response.status(400).json({ message: 'Прикрепи файл игры.' });
+  if (!gameFile) return response.status(400).json({ message: 'Please attach a game file.' });
 
   const { title, description, genre, color, developer, developerEmail } = request.body;
   if (developerEmail !== request.get('x-user-email')) {
     fs.unlinkSync(gameFile.path);
     if (coverImage) fs.unlinkSync(coverImage.path);
-    return response.status(403).json({ message: 'Аккаунт разработчика не подтвержден.' });
+    return response.status(403).json({ message: 'Developer account is not confirmed.' });
   }
   if (!title || !description || !developer) {
     fs.unlinkSync(gameFile.path);
     if (coverImage) fs.unlinkSync(coverImage.path);
-    return response.status(400).json({ message: 'Заполни название, описание и разработчика.' });
+    return response.status(400).json({ message: 'Please fill in the title, description, and developer.' });
   }
 
   const game = {
@@ -184,14 +184,14 @@ app.use('/downloads', express.static(uploadDir));
 app.use('/covers', express.static(coverDir));
 
 function requireLogin(request, response, next) {
-  if (!request.get('x-user-email')) return response.status(401).json({ message: 'Войди в аккаунт, чтобы продолжить.' });
+  if (!request.get('x-user-email')) return response.status(401).json({ message: 'Please sign in to continue.' });
   next();
 }
 
 app.get('/api/games/:id/download', requireLogin, (request, response) => {
   const games = readGames();
   const game = games.find((item) => item.id === request.params.id);
-  if (!game || (game.status || 'approved') !== 'approved') return response.status(404).json({ message: 'Игра не найдена.' });
+  if (!game || (game.status || 'approved') !== 'approved') return response.status(404).json({ message: 'Game not found.' });
   game.downloads = (game.downloads || 0) + 1;
   writeGames(games);
   response.download(path.join(uploadDir, path.basename(decodeURIComponent(game.fileUrl.split('/').pop()))), game.fileName);
@@ -200,12 +200,12 @@ app.get('/api/games/:id/download', requireLogin, (request, response) => {
 app.post('/api/games/:id/reviews', requireLogin, (request, response) => {
   const { text, nickname } = request.body;
   const email = request.get('x-user-email');
-  if (!text?.trim() || !nickname?.trim()) return response.status(400).json({ message: 'Напиши текст отзыва.' });
+  if (!text?.trim() || !nickname?.trim()) return response.status(400).json({ message: 'Please write a review.' });
   const games = readGames();
   const game = games.find((item) => item.id === request.params.id);
-  if (!game) return response.status(404).json({ message: 'Игра не найдена.' });
+  if (!game) return response.status(404).json({ message: 'Game not found.' });
   game.reviews = game.reviews || [];
-  if (game.reviews.some((review) => review.email === email)) return response.status(409).json({ message: 'У тебя уже есть отзыв. Отредактируй его.' });
+  if (game.reviews.some((review) => review.email === email)) return response.status(409).json({ message: 'You already have a review. Edit it instead.' });
   game.reviews.unshift({ id: `review-${Date.now()}`, email, nickname: nickname.trim(), text: text.trim(), createdAt: new Date().toISOString() });
   writeGames(games);
   const { email: reviewEmail, ...createdReview } = game.reviews[0];
@@ -215,12 +215,12 @@ app.post('/api/games/:id/reviews', requireLogin, (request, response) => {
 app.put('/api/games/:id/reviews/:reviewId', requireLogin, (request, response) => {
   const { text } = request.body;
   const email = request.get('x-user-email');
-  if (!text?.trim()) return response.status(400).json({ message: 'Напиши текст отзыва.' });
+  if (!text?.trim()) return response.status(400).json({ message: 'Please write a review.' });
   const games = readGames();
   const game = games.find((item) => item.id === request.params.id);
   const review = game?.reviews?.find((item) => item.id === request.params.reviewId);
-  if (!game || !review) return response.status(404).json({ message: 'Отзыв не найден.' });
-  if (review.email !== email && !isModerator(request)) return response.status(403).json({ message: 'Можно редактировать только свой отзыв.' });
+  if (!game || !review) return response.status(404).json({ message: 'Review not found.' });
+  if (review.email !== email && !isModerator(request)) return response.status(403).json({ message: 'Only your own review can be edited.' });
   review.text = text.trim();
   review.updatedAt = new Date().toISOString();
   writeGames(games);
@@ -230,11 +230,11 @@ app.put('/api/games/:id/reviews/:reviewId', requireLogin, (request, response) =>
 
 app.post('/api/games/:id/reaction', requireLogin, (request, response) => {
   const { type } = request.body;
-  if (!['like', 'dislike'].includes(type)) return response.status(400).json({ message: 'Неизвестная реакция.' });
+  if (!['like', 'dislike'].includes(type)) return response.status(400).json({ message: 'Unknown reaction.' });
   const email = request.get('x-user-email');
   const games = readGames();
   const game = games.find((item) => item.id === request.params.id);
-  if (!game) return response.status(404).json({ message: 'Игра не найдена.' });
+  if (!game) return response.status(404).json({ message: 'Game not found.' });
   game.likes = game.likes || 0;
   game.dislikes = game.dislikes || 0;
   game.reactions = game.reactions || {};
@@ -248,7 +248,7 @@ app.post('/api/games/:id/reaction', requireLogin, (request, response) => {
 });
 
 app.listen(port, () => {
-  console.log(`ARCade запущен: http://localhost:${port}`);
+  console.log(`ARCade running: http://localhost:${port}`);
 });
 
 app.delete('/api/games/:id/reviews/:reviewId', requireLogin, (request, response) => {
@@ -256,8 +256,8 @@ app.delete('/api/games/:id/reviews/:reviewId', requireLogin, (request, response)
   const games = readGames();
   const game = games.find((item) => item.id === request.params.id);
   const review = game?.reviews?.find((item) => item.id === request.params.reviewId);
-  if (!game || !review) return response.status(404).json({ message: 'Отзыв не найден.' });
-  if (review.email !== email && !isModerator(request)) return response.status(403).json({ message: 'Можно удалить только свой отзыв.' });
+  if (!game || !review) return response.status(404).json({ message: 'Review not found.' });
+  if (review.email !== email && !isModerator(request)) return response.status(403).json({ message: 'Only your own review can be deleted.' });
   game.reviews = game.reviews.filter((item) => item.id !== request.params.reviewId);
   writeGames(games);
   response.json({ ok: true });
@@ -265,10 +265,10 @@ app.delete('/api/games/:id/reviews/:reviewId', requireLogin, (request, response)
 
 app.patch('/api/moderation/games/:id/status', requireModerator, (request, response) => {
   const { status } = request.body;
-  if (!['approved', 'rejected'].includes(status)) return response.status(400).json({ message: 'Неизвестный статус.' });
+  if (!['approved', 'rejected'].includes(status)) return response.status(400).json({ message: 'Unknown status.' });
   const games = readGames();
   const game = games.find((item) => item.id === request.params.id);
-  if (!game) return response.status(404).json({ message: 'Игра не найдена.' });
+  if (!game) return response.status(404).json({ message: 'Game not found.' });
   game.status = status;
   game.moderatedAt = new Date().toISOString();
   writeGames(games);
@@ -279,7 +279,7 @@ app.put('/api/moderation/games/:id', requireModerator, (request, response) => {
   const { title, description, genre, color } = request.body;
   const games = readGames();
   const game = games.find((item) => item.id === request.params.id);
-  if (!game) return response.status(404).json({ message: 'Игра не найдена.' });
+  if (!game) return response.status(404).json({ message: 'Game not found.' });
   if (title?.trim()) game.title = title.trim();
   if (description?.trim()) game.description = description.trim();
   if (genre) game.genre = genre;
@@ -291,7 +291,7 @@ app.put('/api/moderation/games/:id', requireModerator, (request, response) => {
 app.delete('/api/moderation/games/:id', requireModerator, (request, response) => {
   const games = readGames();
   const game = games.find((item) => item.id === request.params.id);
-  if (!game) return response.status(404).json({ message: 'Игра не найдена.' });
+  if (!game) return response.status(404).json({ message: 'Game not found.' });
   const fileName = game.fileUrl && path.basename(decodeURIComponent(game.fileUrl.split('/').pop()));
   const coverName = game.coverUrl && path.basename(decodeURIComponent(game.coverUrl.split('/').pop()));
   if (fileName) fs.rmSync(path.join(uploadDir, fileName), { force: true });

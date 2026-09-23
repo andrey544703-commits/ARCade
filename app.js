@@ -1,95 +1,95 @@
 const translations = {
   ru: {
-    open: 'Открыть',
-    library: 'Моя библиотека',
-    studio: 'Студия',
-    moderation: 'Модерация',
-    login: 'Войти',
-    guest: 'Гость',
-    profileHint: 'Войдите, чтобы сохранять игры',
-    logout: 'Выйти',
-    discoverTitle: 'Выбери свой мир',
-    empty: 'Здесь пока пусто',
-    emptyText: 'Попробуй другой фильтр или загляни позже.',
-    libraryTitle: 'Твоя библиотека',
-    libraryNote: 'Сохраненные игры будут здесь',
-    libraryEmpty: 'Библиотека ждет свою первую игру',
-    libraryEmptyText: 'Добавляй игры в каталог, чтобы не потерять их.',
-    backToCatalog: 'Вернуться в каталог',
-    addGame: '+ Новая игра',
-    publishGame: 'Опубликовать игру',
-    all: 'Все',
-    featured: 'Избранное',
-    new: 'Новинки',
-    downloadGame: 'Скачать игру',
-    saveGame: '+ В библиотеку',
-    savedGame: '✓ В библиотеке',
-    likes: 'лайков',
-    dislikes: 'дизлайков',
-    reaction: 'Мнение игроков',
-    like: 'Лайк',
-    dislike: 'Дизлайк',
-    leaveReview: 'Оставить отзыв',
-    editReview: 'Редактировать',
-    deleteReview: 'Удалить',
-    cancel: 'Отмена',
-    reviewPlaceholder: 'Поделись впечатлением об игре...',
-    reviewNow: 'сейчас',
-    guestReviewPrompt: 'Войди, чтобы оставить отзыв.',
-    noReviews: 'Пока нет отзывов. Будь первым.',
-    authWelcome: 'Добро пожаловать',
-    authCreate: 'Создай аккаунт',
-    authSwitchLogin: 'Войти',
-    authSwitchRegister: 'Регистрация',
-    authSubtitle: 'Сохраняй игры, следи за релизами и создавай свои.',
-    authEmail: 'Электронная почта',
-    authNickname: 'Никнейм',
-    authPassword: 'Пароль',
-    authRoleUser: 'Игрок — искать и скачивать игры',
-    authRoleDeveloper: 'Разработчик — публиковать игры',
-    authSubmitLogin: 'Войти',
-    authSubmitRegister: 'Зарегистрироваться',
-    authPromptNickname: 'Придумай никнейм.',
-    authPromptExists: 'Такой email уже зарегистрирован.',
-    authPromptInvalid: 'Неверный email или пароль.',
-    welcomeBack: 'С возвращением,',
-    accountCreated: 'Аккаунт создан',
-    logoutMessage: 'Ты вышел из аккаунта',
-    downloadStarted: 'Скачивание началось',
-    likePlaced: 'Лайк поставлен',
-    dislikePlaced: 'Дизлайк поставлен',
-    reviewPublished: 'Отзыв опубликован',
-    reviewUpdated: 'Отзыв обновлен',
-    reviewDeleted: 'Отзыв удален',
-    gameSaved: 'Игра добавлена в библиотеку',
-    gameRemoved: 'Игра убрана из библиотеки',
-    gameSubmitted: 'Игра отправлена на проверку',
-    moderationQueue: 'Проверка релизов',
-    moderationOnly: 'Только для модераторов',
-    queueEmpty: 'Очередь пуста',
-    noNewReleases: 'Новых публикаций на проверке нет.',
-    publishHeader: 'Опубликовать игру',
-    publishSubtitle: 'Выбери файл игры и обложку. Оба файла сохранятся в папках проекта.',
-    cover: 'Обложка игры',
-    fileGame: 'Файл игры',
-    helperText: 'Игра сохранится в uploads/games, обложка — в uploads/covers.',
-    titleLabel: 'Название игры',
-    descriptionLabel: 'Короткое описание',
-    genreLabel: 'Жанр',
-    colorLabel: 'Цвет обложки',
-    release: 'релиз',
-    newRelease: 'новый релиз',
-    from: 'от',
-    searchPlaceholder: 'Найти игру...',
-    searchTitle: 'Поиск',
-    reviewDeletePrompt: 'Удалить отзыв?',
-    openAuth: 'Войти / создать аккаунт',
-    authNeed: 'Войди, чтобы сохранять игры.',
-    authNeedDownload: 'Войди, чтобы скачать игру.',
-    authNeedRate: 'Войди, чтобы оценить игру.',
-    authNeedPublish: 'Войди, чтобы публиковать игры.',
-    developerRequired: 'Нужен аккаунт разработчика или модератора.',
-    moderatorRequired: 'Раздел доступен только модераторам.'
+    open: 'Discover',
+    library: 'My library',
+    studio: 'Studio',
+    moderation: 'Moderation',
+    login: 'Login',
+    guest: 'Guest',
+    profileHint: 'Sign in to save games',
+    logout: 'Log out',
+    discoverTitle: 'Choose your world',
+    empty: 'Nothing here yet',
+    emptyText: 'Try another filter or come back later.',
+    libraryTitle: 'Your library',
+    libraryNote: 'Saved games will appear here',
+    libraryEmpty: 'Your library is waiting for its first game',
+    libraryEmptyText: 'Add games to your collection to keep them close.',
+    backToCatalog: 'Back to catalog',
+    addGame: '+ New game',
+    publishGame: 'Publish game',
+    all: 'All',
+    featured: 'Featured',
+    new: 'New',
+    downloadGame: 'Download game',
+    saveGame: '+ Save to library',
+    savedGame: '✓ In library',
+    likes: 'likes',
+    dislikes: 'dislikes',
+    reaction: 'Player opinion',
+    like: 'Like',
+    dislike: 'Dislike',
+    leaveReview: 'Leave review',
+    editReview: 'Edit',
+    deleteReview: 'Delete',
+    cancel: 'Cancel',
+    reviewPlaceholder: 'Share your thoughts on the game...',
+    reviewNow: 'now',
+    guestReviewPrompt: 'Sign in to leave a review.',
+    noReviews: 'No reviews yet. Be the first.',
+    authWelcome: 'Welcome',
+    authCreate: 'Create account',
+    authSwitchLogin: 'Sign in',
+    authSwitchRegister: 'Register',
+    authSubtitle: 'Save games, track releases, and publish your own.',
+    authEmail: 'Email',
+    authNickname: 'Nickname',
+    authPassword: 'Password',
+    authRoleUser: 'Player — discover and download games',
+    authRoleDeveloper: 'Developer — publish games',
+    authSubmitLogin: 'Sign in',
+    authSubmitRegister: 'Register',
+    authPromptNickname: 'Choose a nickname.',
+    authPromptExists: 'This email already has an account.',
+    authPromptInvalid: 'Incorrect email or password.',
+    welcomeBack: 'Welcome back,',
+    accountCreated: 'Account created',
+    logoutMessage: 'You logged out',
+    downloadStarted: 'Download started',
+    likePlaced: 'Like added',
+    dislikePlaced: 'Dislike added',
+    reviewPublished: 'Review published',
+    reviewUpdated: 'Review updated',
+    reviewDeleted: 'Review deleted',
+    gameSaved: 'Game added to library',
+    gameRemoved: 'Game removed from library',
+    gameSubmitted: 'Game sent for review',
+    moderationQueue: 'Release review',
+    moderationOnly: 'Moderators only',
+    queueEmpty: 'Queue is empty',
+    noNewReleases: 'No new submissions are waiting.',
+    publishHeader: 'Publish game',
+    publishSubtitle: 'Choose the game archive and cover. Both files are stored in project folders.',
+    cover: 'Game cover',
+    fileGame: 'Game file',
+    helperText: 'The game will be stored in uploads/games and the cover in uploads/covers.',
+    titleLabel: 'Game title',
+    descriptionLabel: 'Short description',
+    genreLabel: 'Genre',
+    colorLabel: 'Cover color',
+    release: 'release',
+    newRelease: 'new release',
+    from: 'by',
+    searchPlaceholder: 'Search game...',
+    searchTitle: 'Search',
+    reviewDeletePrompt: 'Delete review?',
+    openAuth: 'Sign in / create account',
+    authNeed: 'Sign in to save games.',
+    authNeedDownload: 'Sign in to download the game.',
+    authNeedRate: 'Sign in to rate the game.',
+    authNeedPublish: 'Sign in to publish games.',
+    developerRequired: 'A developer or moderator account is required.',
+    moderatorRequired: 'This section is for moderators only.'
   },
   en: {
     open: 'Discover',
@@ -192,7 +192,7 @@ const state = {
   saved: JSON.parse(localStorage.getItem('arcade_saved') || '[]'),
   filter: 'all',
   authMode: 'login',
-  lang: localStorage.getItem('arcade_lang') || 'ru'
+  lang: localStorage.getItem('arcade_lang') || 'en'
 };
 state.users = state.users.map((user) => ({ ...user, role: user.role === 'developer' ? 'developer' : 'user' }));
 if (state.currentUser) state.currentUser.role = state.currentUser.role === 'developer' ? 'developer' : 'user';
@@ -251,22 +251,22 @@ function renderStudio() {
   renderStudioCards(ownGames);
   if (state.currentUser?.role === 'developer' || state.currentUser?.role === 'moderator') fetch('/api/my-games', { headers: currentHeaders() }).then((response) => response.json()).then((games) => { state.games = [...state.games.filter((game) => game.developerEmail !== state.currentUser.email), ...games]; renderStudioCards(games); }).catch(() => {});
 }
-function renderStudioCards(games) { $('#studioGames').innerHTML = games.length ? games.map((game) => `<div class="studio-game"><h4>${escapeHtml(game.title)}</h4><p>${escapeHtml(game.genre)} · ${escapeHtml(game.fileName)}</p><span class="release-status ${escapeHtml(game.status || 'approved')}">${game.status === 'pending' ? (state.lang === 'ru' ? 'На проверке' : 'Pending') : game.status === 'rejected' ? (state.lang === 'ru' ? 'Отклонена' : 'Rejected') : (state.lang === 'ru' ? 'Одобрена' : 'Approved')}</span>${game.status === 'approved' ? `<a href="${escapeHtml(game.fileUrl)}" download>${state.lang === 'ru' ? 'Скачать файл' : 'Download file'} ↘</a>` : ''}</div>`).join('') : `<div class="studio-game"><h4>${state.lang === 'ru' ? 'Пока нет релизов' : 'No releases yet'}</h4><p>${state.lang === 'ru' ? 'Первая публикация появится после отправки.' : 'Your first release will appear after submission.'}</p></div>`; }
+function renderStudioCards(games) { $('#studioGames').innerHTML = games.length ? games.map((game) => `<div class="studio-game"><h4>${escapeHtml(game.title)}</h4><p>${escapeHtml(game.genre)} · ${escapeHtml(game.fileName)}</p><span class="release-status ${escapeHtml(game.status || 'approved')}">${game.status === 'pending' ? 'Pending' : game.status === 'rejected' ? 'Rejected' : 'Approved'}</span>${game.status === 'approved' ? `<a href="${escapeHtml(game.fileUrl)}" download>Download file ↘</a>` : ''}</div>`).join('') : `<div class="studio-game"><h4>No releases yet</h4><p>Your first release will appear after submission.</p></div>`; }
 function renderModeration(games) {
-  $('#moderationList').innerHTML = games.length ? games.map((game) => `<article class="moderation-item"><div><p class="eyebrow">${escapeHtml(game.status || 'approved')} / ${escapeHtml(game.developer)}</p><h3>${escapeHtml(game.title)}</h3><p>${escapeHtml(game.description)}</p></div><div class="moderation-actions"><button class="small-button" data-approve="${escapeHtml(game.id)}" title="${state.lang === 'ru' ? 'Одобрить' : 'Approve'}">✓</button><button class="small-button" data-reject="${escapeHtml(game.id)}" title="${state.lang === 'ru' ? 'Отклонить' : 'Reject'}">×</button><button class="small-button" data-edit-game="${escapeHtml(game.id)}" title="${state.lang === 'ru' ? 'Редактировать' : 'Edit'}">✎</button><button class="small-button" data-delete-game="${escapeHtml(game.id)}" title="${state.lang === 'ru' ? 'Удалить' : 'Delete'}">⌫</button></div></article>`).join('') : `<div class="empty-state"><span>✓</span><h3>${t('queueEmpty')}</h3><p>${t('noNewReleases')}</p></div>`;
+  $('#moderationList').innerHTML = games.length ? games.map((game) => `<article class="moderation-item"><div><p class="eyebrow">${escapeHtml(game.status || 'approved')} / ${escapeHtml(game.developer)}</p><h3>${escapeHtml(game.title)}</h3><p>${escapeHtml(game.description)}</p></div><div class="moderation-actions"><button class="small-button" data-approve="${escapeHtml(game.id)}" title="Approve">✓</button><button class="small-button" data-reject="${escapeHtml(game.id)}" title="Reject">×</button><button class="small-button" data-edit-game="${escapeHtml(game.id)}" title="Edit">✎</button><button class="small-button" data-delete-game="${escapeHtml(game.id)}" title="Delete">⌫</button></div></article>`).join('') : `<div class="empty-state"><span>✓</span><h3>${t('queueEmpty')}</h3><p>${t('noNewReleases')}</p></div>`;
   $$('[data-approve]').forEach((button) => button.addEventListener('click', () => moderateGame(button.dataset.approve, 'approved')));
   $$('[data-reject]').forEach((button) => button.addEventListener('click', () => moderateGame(button.dataset.reject, 'rejected')));
   $$('[data-edit-game]').forEach((button) => button.addEventListener('click', () => editModeratedGame(button.dataset.editGame)));
   $$('[data-delete-game]').forEach((button) => button.addEventListener('click', () => deleteModeratedGame(button.dataset.deleteGame)));
 }
-function loadModeration() { fetch('/api/moderation/games', { headers: currentHeaders() }).then((response) => response.json()).then((games) => { if (Array.isArray(games)) renderModeration(games); }).catch(() => toast('Не удалось загрузить очередь модерации.')); }
-function moderateGame(id, status) { fetch(`/api/moderation/games/${encodeURIComponent(id)}/status`, { method: 'PATCH', headers: { ...currentHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) }).then(async (response) => { if (!response.ok) throw new Error((await response.json()).message); loadModeration(); toast(status === 'approved' ? 'Игра одобрена' : 'Игра отклонена'); }).catch((error) => toast(error.message)); }
-function editModeratedGame(id) { const game = state.games.find((item) => item.id === id); if (!game) return; const title = prompt('Название игры', game.title); const description = prompt('Описание игры', game.description); const genre = prompt('Жанр', game.genre); const color = prompt('Цвет обложки в формате #RRGGBB', game.color); if ([title, description, genre, color].some((value) => value === null)) return; fetch(`/api/moderation/games/${encodeURIComponent(id)}`, { method: 'PUT', headers: { ...currentHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ title, description, genre, color }) }).then(() => { loadModeration(); toast('Игра обновлена'); }); }
-function deleteModeratedGame(id) { if (!confirm('Удалить игру и ее файлы?')) return; fetch(`/api/moderation/games/${encodeURIComponent(id)}`, { method: 'DELETE', headers: currentHeaders() }).then(() => { state.games = state.games.filter((game) => game.id !== id); renderCatalog(); loadModeration(); toast('Игра удалена'); }); }
+function loadModeration() { fetch('/api/moderation/games', { headers: currentHeaders() }).then((response) => response.json()).then((games) => { if (Array.isArray(games)) renderModeration(games); }).catch(() => toast('Failed to load the moderation queue.')); }
+function moderateGame(id, status) { fetch(`/api/moderation/games/${encodeURIComponent(id)}/status`, { method: 'PATCH', headers: { ...currentHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) }).then(async (response) => { if (!response.ok) throw new Error((await response.json()).message); loadModeration(); toast(status === 'approved' ? 'Game approved' : 'Game rejected'); }).catch((error) => toast(error.message)); }
+function editModeratedGame(id) { const game = state.games.find((item) => item.id === id); if (!game) return; const title = prompt('Game title', game.title); const description = prompt('Description', game.description); const genre = prompt('Genre', game.genre); const color = prompt('Cover color in #RRGGBB format', game.color); if ([title, description, genre, color].some((value) => value === null)) return; fetch(`/api/moderation/games/${encodeURIComponent(id)}`, { method: 'PUT', headers: { ...currentHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ title, description, genre, color }) }).then(() => { loadModeration(); toast('Game updated'); }); }
+function deleteModeratedGame(id) { if (!confirm('Delete the game and its files?')) return; fetch(`/api/moderation/games/${encodeURIComponent(id)}`, { method: 'DELETE', headers: currentHeaders() }).then(() => { state.games = state.games.filter((game) => game.id !== id); renderCatalog(); loadModeration(); toast('Game deleted'); }); }
 function applyLanguage() {
   document.documentElement.lang = state.lang;
   $('#langToggle').textContent = state.lang === 'ru' ? 'EN' : 'RU';
-  $('#langToggle').setAttribute('aria-label', state.lang === 'ru' ? 'Switch language to English' : 'Переключить язык на русский');
+  $('#langToggle').setAttribute('aria-label', state.lang === 'ru' ? 'Switch language to English' : 'Switch language to Russian');
   $('#profileName').textContent = state.currentUser ? state.currentUser.nickname : t('login');
   $('#menuUserName').textContent = state.currentUser ? state.currentUser.nickname : t('guest');
   $('#menuUserEmail').textContent = state.currentUser ? `${state.currentUser.email} · ${state.currentUser.role}` : t('profileHint');
@@ -325,7 +325,7 @@ function downloadGame(id) {
   fetch(`/api/games/${encodeURIComponent(id)}/download`, { headers: currentHeaders() })
     .then(async (response) => { if (!response.ok) { const error = await response.json(); throw new Error(error.message); } return response.blob(); })
     .then((blob) => { const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = state.games.find((game) => game.id === id)?.fileName || 'game-download'; link.click(); URL.revokeObjectURL(link.href); const game = state.games.find((item) => item.id === id); if (game) game.downloads = (game.downloads || 0) + 1; toast(t('downloadStarted')); if ($('#detailTitle').textContent === game?.title) $('#detailDownloads').textContent = game.downloads; })
-    .catch((error) => toast(error.message || 'Не удалось скачать игру.'));
+    .catch((error) => toast(error.message || 'Failed to download the game.'));
 }
 function openGame(id) {
   const game = state.games.find((item) => item.id === id);
@@ -360,7 +360,7 @@ function loadGameDetail(game) {
   $('#reviewSubmit').innerHTML = `${t('leaveReview')} <span>↗</span>`;
   $('#reviewCancel').classList.add('is-hidden');
   $('#reviewsList').innerHTML = (game.reviews || []).length ? game.reviews.map((review) => { const reactionLabel = review.reaction === 'like' ? t('like') : review.reaction === 'dislike' ? t('dislike') : ''; const canManage = review.isOwner || state.currentUser?.role === 'moderator'; return `<article class="review"><div><strong>${escapeHtml(review.nickname)}</strong>${reactionLabel ? `<span class="review-reaction">${reactionLabel}</span>` : ''}<span>${new Date(review.createdAt).toLocaleDateString(state.lang === 'ru' ? 'ru-RU' : 'en-US')}</span>${canManage ? `<button class="review-edit" data-review-id="${escapeHtml(review.id)}">${t('editReview')}</button><button class="review-edit review-delete" data-delete-review-id="${escapeHtml(review.id)}">${t('deleteReview')}</button>` : ''}</div><p>${escapeHtml(review.text)}</p></article>`; }).join('') : `<p class="no-reviews">${t('noReviews')}</p>`;
-  $$('#reviewsList [data-review-id]').forEach((button) => button.addEventListener('click', () => { const review = game.reviews.find((item) => item.id === button.dataset.reviewId); if (!review) return; $('#reviewForm').dataset.reviewId = review.id; $('#reviewText').value = review.text; $('#reviewSubmit').innerHTML = `${state.lang === 'ru' ? 'Сохранить изменения' : 'Save changes'} <span>↗</span>`; $('#reviewCancel').classList.remove('is-hidden'); $('#reviewText').focus(); }));
+  $$('#reviewsList [data-review-id]').forEach((button) => button.addEventListener('click', () => { const review = game.reviews.find((item) => item.id === button.dataset.reviewId); if (!review) return; $('#reviewForm').dataset.reviewId = review.id; $('#reviewText').value = review.text; $('#reviewSubmit').innerHTML = `Save changes <span>↗</span>`; $('#reviewCancel').classList.remove('is-hidden'); $('#reviewText').focus(); }));
   $$('#reviewsList [data-delete-review-id]').forEach((button) => button.addEventListener('click', () => { if (!confirm(t('reviewDeletePrompt'))) return; fetch(`/api/games/${encodeURIComponent(game.id)}/reviews/${encodeURIComponent(button.dataset.deleteReviewId)}`, { method: 'DELETE', headers: currentHeaders() }).then(() => { button.closest('.review').remove(); toast(t('reviewDeleted')); }); }));
 }
 function reactToGame(id, type) {
@@ -368,14 +368,14 @@ function reactToGame(id, type) {
   fetch(`/api/games/${encodeURIComponent(id)}/reaction`, { method: 'POST', headers: { ...currentHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ type }) })
     .then((response) => response.json())
     .then((metrics) => { $('#detailLikes').textContent = metrics.likes; $('#detailDislikes').textContent = metrics.dislikes; toast(type === 'like' ? t('likePlaced') : t('dislikePlaced')); })
-    .catch(() => toast('Не удалось сохранить реакцию.'));
+    .catch(() => toast('Failed to save reaction.'));
 }
 function navigate(route) {
   $$('.nav-link').forEach((link) => link.classList.toggle('is-active', link.dataset.route === route));
   ['discover', 'library', 'studio', 'moderation', 'gameDetail'].forEach((id) => $(`#${id}`).classList.toggle('is-hidden', id !== route));
   if (route === 'library') renderLibrary();
-  if (route === 'studio' && (!state.currentUser || !['developer', 'moderator'].includes(state.currentUser.role))) { openModal('authModal'); showAuthMessage('Нужен аккаунт разработчика или модератора.'); navigate('discover'); }
-  if (route === 'moderation' && (!state.currentUser || state.currentUser.role !== 'moderator')) { openModal('authModal'); showAuthMessage('Раздел доступен только модераторам.'); navigate('discover'); }
+  if (route === 'studio' && (!state.currentUser || !['developer', 'moderator'].includes(state.currentUser.role))) { openModal('authModal'); showAuthMessage('A developer or moderator account is required.'); navigate('discover'); }
+  if (route === 'moderation' && (!state.currentUser || state.currentUser.role !== 'moderator')) { openModal('authModal'); showAuthMessage('This section is for moderators only.'); navigate('discover'); }
   if (route === 'moderation') loadModeration();
   window.scrollTo({ top: document.querySelector('main').offsetTop - 20, behavior: 'smooth' });
 }
@@ -419,8 +419,8 @@ $('#reviewForm').addEventListener('submit', (event) => {
   const isEditing = Boolean(reviewId);
   fetch(`/api/games/${encodeURIComponent(gameId)}/reviews${isEditing ? `/${encodeURIComponent(reviewId)}` : ''}`, { method: isEditing ? 'PUT' : 'POST', headers: { ...currentHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ nickname: state.currentUser.nickname, text: $('#reviewText').value }) })
     .then(async (response) => { const review = await response.json(); if (!response.ok) throw new Error(review.message); return review; })
-    .then((review) => { const list = $('#reviewsList'); if (isEditing) { const current = list.querySelector(`[data-review-id="${CSS.escape(review.id)}"]`); const article = current?.closest('.review'); if (article) article.querySelector('p').textContent = review.text; } else { if (list.querySelector('.no-reviews')) list.innerHTML = ''; list.insertAdjacentHTML('afterbegin', `<article class="review"><div><strong>${escapeHtml(review.nickname)}</strong>${review.reaction ? `<span class="review-reaction">${review.reaction === 'like' ? t('like') : t('dislike')}</span>` : ''}<span>${t('reviewNow')}</span><button class="review-edit" data-review-id="${escapeHtml(review.id)}">${t('editReview')}</button></div><p>${escapeHtml(review.text)}</p></article>`); const editButton = list.querySelector(`[data-review-id="${CSS.escape(review.id)}"]`); editButton.addEventListener('click', () => { reviewForm.dataset.reviewId = review.id; $('#reviewText').value = review.text; $('#reviewSubmit').innerHTML = `${state.lang === 'ru' ? 'Сохранить изменения' : 'Save changes'} <span>↗</span>`; $('#reviewCancel').classList.remove('is-hidden'); }); } reviewForm.reset(); reviewForm.dataset.reviewId = ''; $('#reviewCancel').classList.add('is-hidden'); $('#reviewSubmit').innerHTML = `${t('leaveReview')} <span>↗</span>`; toast(isEditing ? t('reviewUpdated') : t('reviewPublished')); })
-    .catch((error) => toast(error.message || 'Не удалось отправить отзыв.'));
+    .then((review) => { const list = $('#reviewsList'); if (isEditing) { const current = list.querySelector(`[data-review-id="${CSS.escape(review.id)}"]`); const article = current?.closest('.review'); if (article) article.querySelector('p').textContent = review.text; } else { if (list.querySelector('.no-reviews')) list.innerHTML = ''; list.insertAdjacentHTML('afterbegin', `<article class="review"><div><strong>${escapeHtml(review.nickname)}</strong>${review.reaction ? `<span class="review-reaction">${review.reaction === 'like' ? t('like') : t('dislike')}</span>` : ''}<span>${t('reviewNow')}</span><button class="review-edit" data-review-id="${escapeHtml(review.id)}">${t('editReview')}</button></div><p>${escapeHtml(review.text)}</p></article>`); const editButton = list.querySelector(`[data-review-id="${CSS.escape(review.id)}"]`); editButton.addEventListener('click', () => { reviewForm.dataset.reviewId = review.id; $('#reviewText').value = review.text; $('#reviewSubmit').innerHTML = 'Save changes <span>↗</span>'; $('#reviewCancel').classList.remove('is-hidden'); }); } reviewForm.reset(); reviewForm.dataset.reviewId = ''; $('#reviewCancel').classList.add('is-hidden'); $('#reviewSubmit').innerHTML = `${t('leaveReview')} <span>↗</span>`; toast(isEditing ? t('reviewUpdated') : t('reviewPublished')); })
+    .catch((error) => toast(error.message || 'Failed to submit review.'));
 });
 $('#reviewCancel').addEventListener('click', () => { $('#reviewForm').reset(); $('#reviewForm').dataset.reviewId = ''; $('#reviewCancel').classList.add('is-hidden'); $('#reviewSubmit').innerHTML = `${t('leaveReview')} <span>↗</span>`; });
 
@@ -453,11 +453,11 @@ $('#gameForm').addEventListener('submit', (event) => {
   formData.append('coverImage', $('#coverImage').files[0]);
   const submitButton = $('#gameForm button[type="submit"]');
   submitButton.disabled = true;
-  submitButton.firstChild.textContent = state.lang === 'ru' ? 'Загрузка... ' : 'Uploading... ';
+  submitButton.firstChild.textContent = 'Uploading... ';
   fetch('/api/games', { method: 'POST', headers: currentHeaders(), body: formData })
     .then(async (response) => { const payload = await response.json(); if (!response.ok) throw new Error(payload.message); return payload; })
     .then(() => { renderCatalog(); renderStudio(); closeModal('gameModal'); event.target.reset(); toast(t('gameSubmitted')); })
-    .catch((error) => { $('#gameMessage').textContent = error.message || 'Не удалось загрузить игру.'; })
+    .catch((error) => { $('#gameMessage').textContent = error.message || 'Failed to upload the game.'; })
     .finally(() => { submitButton.disabled = false; submitButton.firstChild.textContent = `${t('publishGame')} `; });
 });
 
@@ -468,7 +468,7 @@ const initialRoute = location.hash.replace('#', '') || 'discover';
 fetch('/api/games')
   .then((response) => response.json())
   .then((games) => { state.games = games; renderCatalog(); renderLibrary(); renderStudio(); if (initialRoute.startsWith('game/')) openGame(decodeURIComponent(initialRoute.slice(5))); })
-  .catch(() => { $('#emptyState').classList.remove('is-hidden'); $('#emptyState h3').textContent = 'Сервер не запущен'; $('#emptyState p').textContent = 'Запусти npm install, затем npm start.'; });
+  .catch(() => { $('#emptyState').classList.remove('is-hidden'); $('#emptyState h3').textContent = 'Server is not running'; $('#emptyState p').textContent = 'Run npm install and then npm start.'; });
 applyLanguage();
 updateProfile();
 syncCurrentUserPermissions();

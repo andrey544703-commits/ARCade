@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0c0c10" />
-  <title>ARCade — магазин инди-игр</title>
+  <title>ARCade — indie game store</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
@@ -17,21 +17,21 @@
       <a class="brand" href="#discover" data-route="discover" aria-label="ARCade">
         <span class="brand-mark">A</span><span>ARC<span class="brand-accent">ade</span></span>
       </a>
-      <nav class="main-nav" aria-label="Основная навигация">
-        <a class="nav-link is-active" href="#discover" data-route="discover">Открыть</a>
-        <a class="nav-link" href="#library" data-route="library">Моя библиотека</a>
-        <a class="nav-link developer-only" href="#studio" data-route="studio">Студия</a>
-        <a class="nav-link moderator-only is-hidden" href="#moderation" data-route="moderation">Модерация</a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a class="nav-link is-active" href="#discover" data-route="discover">Discover</a>
+        <a class="nav-link" href="#library" data-route="library">My library</a>
+        <a class="nav-link developer-only" href="#studio" data-route="studio">Studio</a>
+        <a class="nav-link moderator-only is-hidden" href="#moderation" data-route="moderation">Moderation</a>
       </nav>
       <div class="topbar-actions">
-        <button class="icon-button" id="searchToggle" title="Поиск" aria-label="Поиск">⌕</button>
-        <div class="search-box" id="searchBox"><input id="searchInput" type="search" placeholder="Найти игру..." /></div>
+        <button class="icon-button" id="searchToggle" title="Search" aria-label="Search">⌕</button>
+        <div class="search-box" id="searchBox"><input id="searchInput" type="search" placeholder="Search games..." /></div>
         <button class="lang-toggle" id="langToggle" type="button" aria-label="Switch language" title="Switch language">EN</button>
-        <button class="profile-chip" id="profileButton" aria-label="Открыть профиль"><span class="avatar" id="avatar">?</span><span class="profile-name" id="profileName">Войти</span><span class="chevron">⌄</span></button>
+        <button class="profile-chip" id="profileButton" aria-label="Open profile"><span class="avatar" id="avatar">?</span><span class="profile-name" id="profileName">Login</span><span class="chevron">⌄</span></button>
         <div class="profile-menu" id="profileMenu">
-          <div class="menu-user"><strong id="menuUserName">Гость</strong><span id="menuUserEmail">Войдите, чтобы сохранять игры</span></div>
-          <button id="openAuth">Войти / создать аккаунт</button>
-          <button id="logoutButton" class="danger-action is-hidden">Выйти</button>
+          <div class="menu-user"><strong id="menuUserName">Guest</strong><span id="menuUserEmail">Sign in to save games</span></div>
+          <button id="openAuth">Sign in / create account</button>
+          <button id="logoutButton" class="danger-action is-hidden">Log out</button>
         </div>
       </div>
     </header>
@@ -39,12 +39,12 @@
     <main>
       <section class="hero-section">
         <div class="hero-copy">
-          <p class="eyebrow"><span class="status-dot"></span> независимые игры, собранные с любовью</p>
-          <h1>Играй в<br><em>необычное.</em></h1>
-          <p class="hero-text">Место, где маленькие команды выпускают большие идеи. Находи следующую игру, которая останется с тобой.</p>
-          <a class="primary-button" href="#discover" data-route="discover">Смотреть каталог <span>↗</span></a>
+          <p class="eyebrow"><span class="status-dot"></span> indie games, gathered with love</p>
+          <h1>Play the<br><em>unexpected.</em></h1>
+          <p class="hero-text">A place where small teams ship big ideas. Find the next game that stays with you.</p>
+          <a class="primary-button" href="#discover" data-route="discover">Browse catalog <span>↗</span></a>
         </div>
-        <div class="hero-art" aria-label="Подборка игр">
+        <div class="hero-art" aria-label="Game collection">
           <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
           <div class="hero-game-tile tile-back"><span>NEON<br>RUSH</span><small>01</small></div>
           <div class="hero-game-tile tile-main"><span>VOID<br><b>WALKER</b></span><small>02 / 24</small><i>↗</i></div>
@@ -54,43 +54,43 @@
       </section>
 
       <section class="content-section" id="discover">
-        <div class="section-heading"><div><p class="eyebrow">01 / витрина</p><h2>Выбери свой мир</h2></div><div class="heading-tools"><div class="filter-tabs" id="filterTabs"><button class="filter-tab is-active" data-filter="all">Все</button><button class="filter-tab" data-filter="featured">Избранное</button><button class="filter-tab" data-filter="new">Новинки</button></div></div></div>
+        <div class="section-heading"><div><p class="eyebrow">01 / showcase</p><h2>Choose your world</h2></div><div class="heading-tools"><div class="filter-tabs" id="filterTabs"><button class="filter-tab is-active" data-filter="all">All</button><button class="filter-tab" data-filter="featured">Featured</button><button class="filter-tab" data-filter="new">New</button></div></div></div>
         <div class="games-grid" id="gamesGrid"></div>
-        <div class="empty-state is-hidden" id="emptyState"><span>∅</span><h3>Здесь пока пусто</h3><p>Попробуй другой фильтр или загляни позже.</p></div>
+        <div class="empty-state is-hidden" id="emptyState"><span>∅</span><h3>Nothing here yet</h3><p>Try another filter or come back later.</p></div>
       </section>
 
       <section class="library-section is-hidden" id="library">
-        <div class="section-heading"><div><p class="eyebrow">02 / коллекция</p><h2>Твоя библиотека</h2></div><p class="section-note">Сохраненные игры будут здесь</p></div>
+        <div class="section-heading"><div><p class="eyebrow">02 / collection</p><h2>Your library</h2></div><p class="section-note">Saved games will appear here</p></div>
         <div class="games-grid" id="libraryGrid"></div>
-        <div class="empty-state" id="libraryEmpty"><span>✦</span><h3>Библиотека ждет свою первую игру</h3><p>Добавляй игры в каталог, чтобы не потерять их.</p><a class="outline-button" href="#discover" data-route="discover">Вернуться в каталог</a></div>
+        <div class="empty-state" id="libraryEmpty"><span>✦</span><h3>Your library is waiting for its first game</h3><p>Add games to your collection to keep them close.</p><a class="outline-button" href="#discover" data-route="discover">Back to catalog</a></div>
       </section>
 
       <section class="studio-section is-hidden" id="studio">
-        <div class="section-heading"><div><p class="eyebrow">03 / creator studio</p><h2>Публикуй свои миры</h2></div><button class="primary-button compact" id="addGameButton">+ Новая игра</button></div>
-        <div class="studio-layout"><div class="studio-intro"><span class="studio-number">A / 01</span><h3>Твоя студия<br><em>начинается здесь.</em></h3><p>Загрузи архив игры прямо в проект — игроки смогут скачать его одним кликом.</p></div><div class="studio-games" id="studioGames"></div></div>
+        <div class="section-heading"><div><p class="eyebrow">03 / creator studio</p><h2>Publish your worlds</h2></div><button class="primary-button compact" id="addGameButton">+ New game</button></div>
+        <div class="studio-layout"><div class="studio-intro"><span class="studio-number">A / 01</span><h3>Your studio<br><em>starts here.</em></h3><p>Upload the game archive directly to the project — players can download it with one click.</p></div><div class="studio-games" id="studioGames"></div></div>
       </section>
 
       <section class="moderation-section is-hidden" id="moderation">
-        <div class="section-heading"><div><p class="eyebrow">04 / moderation</p><h2>Проверка релизов</h2></div><p class="section-note">Только для модераторов</p></div>
+        <div class="section-heading"><div><p class="eyebrow">04 / moderation</p><h2>Release review</h2></div><p class="section-note">Moderators only</p></div>
         <div class="moderation-list" id="moderationList"></div>
       </section>
 
       <section class="game-detail-section is-hidden" id="gameDetail">
-        <button class="back-button" id="backToCatalog">← Вернуться в каталог</button>
+        <button class="back-button" id="backToCatalog">← Back to catalog</button>
         <div class="detail-layout">
           <div class="detail-cover" id="detailCover"></div>
-          <div class="detail-copy"><p class="eyebrow" id="detailGenre">игра</p><h2 id="detailTitle"></h2><p class="detail-developer" id="detailDeveloper"></p><p class="detail-description" id="detailDescription"></p><div class="detail-actions"><button class="primary-button" id="detailDownload">Скачать игру <span>↓</span></button><button class="outline-button" id="detailSave">+ В библиотеку</button></div><div class="game-stats"><span><b id="detailDownloads">0</b> скачиваний</span><span><b id="detailLikes">0</b> лайков</span><span><b id="detailDislikes">0</b> дизлайков</span></div></div>
+          <div class="detail-copy"><p class="eyebrow" id="detailGenre">game</p><h2 id="detailTitle"></h2><p class="detail-developer" id="detailDeveloper"></p><p class="detail-description" id="detailDescription"></p><div class="detail-actions"><button class="primary-button" id="detailDownload">Download game <span>↓</span></button><button class="outline-button" id="detailSave">+ Save to library</button></div><div class="game-stats"><span><b id="detailDownloads">0</b> downloads</span><span><b id="detailLikes">0</b> likes</span><span><b id="detailDislikes">0</b> dislikes</span></div></div>
         </div>
-        <div class="detail-community"><div class="reaction-row"><h3>Мнение игроков</h3><div><button class="reaction-button" id="likeButton">↑ <span>Лайк</span></button><button class="reaction-button" id="dislikeButton">↓ <span>Дизлайк</span></button></div></div><form class="review-form" id="reviewForm"><textarea id="reviewText" rows="3" placeholder="Поделись впечатлением об игре..." required></textarea><div class="review-form-actions"><button class="primary-button compact" type="submit" id="reviewSubmit">Оставить отзыв <span>↗</span></button><button class="outline-button is-hidden" type="button" id="reviewCancel">Отмена</button></div></form><div class="reviews-list" id="reviewsList"></div></div>
+        <div class="detail-community"><div class="reaction-row"><h3>Player opinion</h3><div><button class="reaction-button" id="likeButton">↑ <span>Like</span></button><button class="reaction-button" id="dislikeButton">↓ <span>Dislike</span></button></div></div><form class="review-form" id="reviewForm"><textarea id="reviewText" rows="3" placeholder="Share your thoughts on the game..." required></textarea><div class="review-form-actions"><button class="primary-button compact" type="submit" id="reviewSubmit">Leave review <span>↗</span></button><button class="outline-button is-hidden" type="button" id="reviewCancel">Cancel</button></div></form><div class="reviews-list" id="reviewsList"></div></div>
       </section>
     </main>
 
-    <footer><span>ARCade / 2024—2026</span><span>Сделано для тех, кто ищет новое</span><span class="footer-symbol">↗</span></footer>
+    <footer><span>ARCade / 2024—2026</span><span>Built for people who want something new</span><span class="footer-symbol">↗</span></footer>
   </div>
 
-  <div class="modal-backdrop is-hidden" id="authModal"><div class="modal auth-modal"><button class="modal-close" data-close="authModal">×</button><div class="modal-kicker">ARCade account</div><h2 id="authTitle">Добро пожаловать</h2><p class="modal-subtitle">Сохраняй игры, следи за релизами и создавай свои.</p><div class="auth-switch"><button class="is-active" data-auth-mode="login">Войти</button><button data-auth-mode="register">Регистрация</button></div><form id="authForm"><label>Электронная почта<input type="email" id="authEmail" placeholder="you@example.com" required /></label><label class="register-field is-hidden">Никнейм<input type="text" id="authNickname" placeholder="pixelmaker" /></label><label>Пароль<input type="password" id="authPassword" placeholder="••••••••" minlength="4" required /></label><label class="register-field is-hidden">Роль<select id="authRole"><option value="user">Игрок — искать и скачивать игры</option><option value="developer">Разработчик — публиковать игры</option></select></label><button class="primary-button full-width" type="submit" id="authSubmit">Войти <span>↗</span></button></form><p class="form-message" id="authMessage"></p></div></div>
+  <div class="modal-backdrop is-hidden" id="authModal"><div class="modal auth-modal"><button class="modal-close" data-close="authModal">×</button><div class="modal-kicker">ARCade account</div><h2 id="authTitle">Welcome</h2><p class="modal-subtitle">Save games, track releases, and publish your own.</p><div class="auth-switch"><button class="is-active" data-auth-mode="login">Sign in</button><button data-auth-mode="register">Register</button></div><form id="authForm"><label>Email<input type="email" id="authEmail" placeholder="you@example.com" required /></label><label class="register-field is-hidden">Nickname<input type="text" id="authNickname" placeholder="pixelmaker" /></label><label>Password<input type="password" id="authPassword" placeholder="••••••••" minlength="4" required /></label><label class="register-field is-hidden">Role<select id="authRole"><option value="user">Player — discover and download games</option><option value="developer">Developer — publish games</option></select></label><button class="primary-button full-width" type="submit" id="authSubmit">Sign in <span>↗</span></button></form><p class="form-message" id="authMessage"></p></div></div>
 
-  <div class="modal-backdrop is-hidden" id="gameModal"><div class="modal game-modal"><button class="modal-close" data-close="gameModal">×</button><div class="modal-kicker">Creator studio / new release</div><h2>Опубликовать игру</h2><p class="modal-subtitle">Выбери файл игры и обложку. Оба файла сохранятся в папках проекта.</p><form id="gameForm"><label>Название игры<input type="text" id="gameTitle" placeholder="Например, Moon Motel" required /></label><label>Короткое описание<textarea id="gameDescription" rows="3" placeholder="О чем эта игра?" required></textarea></label><div class="form-row"><label>Жанр<select id="gameGenre"><option>Adventure</option><option>Action</option><option>Puzzle</option><option>Strategy</option><option>Cozy</option></select></label><label>Цвет обложки<input type="color" id="gameColor" value="#dcff36" /></label></div><label>Файл игры<input type="file" id="gameFile" accept=".zip,.rar,.7z,.exe,.msi,.apk,.dmg" required /></label><label>Обложка игры<input type="file" id="coverImage" accept="image/png,image/jpeg,image/webp" required /></label><p class="helper-text">Игра сохранится в <strong>uploads/games</strong>, обложка — в <strong>uploads/covers</strong>.</p><button class="primary-button full-width" type="submit">Опубликовать игру <span>↗</span></button></form><p class="form-message" id="gameMessage"></p></div></div>
+  <div class="modal-backdrop is-hidden" id="gameModal"><div class="modal game-modal"><button class="modal-close" data-close="gameModal">×</button><div class="modal-kicker">Creator studio / new release</div><h2>Publish game</h2><p class="modal-subtitle">Choose the game archive and cover. Both files will be stored in project folders.</p><form id="gameForm"><label>Game title<input type="text" id="gameTitle" placeholder="For example, Moon Motel" required /></label><label>Short description<textarea id="gameDescription" rows="3" placeholder="What is this game about?" required></textarea></label><div class="form-row"><label>Genre<select id="gameGenre"><option>Adventure</option><option>Action</option><option>Puzzle</option><option>Strategy</option><option>Cozy</option></select></label><label>Cover color<input type="color" id="gameColor" value="#dcff36" /></label></div><label>Game file<input type="file" id="gameFile" accept=".zip,.rar,.7z,.exe,.msi,.apk,.dmg" required /></label><label>Game cover<input type="file" id="coverImage" accept="image/png,image/jpeg,image/webp" required /></label><p class="helper-text">The game will be stored in <strong>uploads/games</strong>, and the cover in <strong>uploads/covers</strong>.</p><button class="primary-button full-width" type="submit">Publish game <span>↗</span></button></form><p class="form-message" id="gameMessage"></p></div></div>
   <div class="toast" id="toast"></div>
   <script src="app.js"></script>
 </body>
